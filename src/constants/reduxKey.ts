@@ -1,0 +1,6 @@
+export const reduxTypes = {
+  IS_USER_LOGIN: 'IS_USER_LOGIN',
+  PROFILE_DATA: 'PROFILE_DATA',
+  RESET_DATA: 'RESET_DATA',
+  THEME_MODE: 'THEME_MODE',
+};

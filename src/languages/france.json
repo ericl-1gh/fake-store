@@ -1,0 +1,26 @@
+{
+  "appName": "RNDemo_0.76",
+  "HomeScreen": "HomeScreen",
+  "SettingScreen": "SettingScreen",
+  "wel_come": "Welcome to Atharva System",
+  "sub_welCome": "Ready to manage your app with Atharva system",
+  "accept_agree": "By creating an account you agree to our",
+  "and": "&",
+  "policy_title": "Privacy Policy",
+  "term_title": "Term of Use",
+
+  "home": "Home",
+  "setting": "Setting",
+  "general": "General",
+  "auto": "Auto",
+  "light": "Light",
+  "dark": "Dark",
+  "signout": "SignOut",
+  "appearance": "Appearance",
+  "sigOut_message": "Are you sure you want to signout",
+  "cancel": "Cancel",
+  "yes": "YES",
+  "donot_have_account": "Don't have an account?",
+  "forgot_password": "Forgot password",
+  "already_have_account": "Already have an account?"
+}
