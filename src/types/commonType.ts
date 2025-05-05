@@ -6,4 +6,6 @@ export type ImageKeys = keyof typeof images;
 export type ScreenComponents = {
   HomeScreen: React.ComponentType<any>;
   SettingScreen: React.ComponentType<any>;
+  CartScreen: React.ComponentType<any>;
+  OrderScreen: React.ComponentType<any>;
 };
