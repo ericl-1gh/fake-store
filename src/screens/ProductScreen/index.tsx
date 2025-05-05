@@ -5,6 +5,7 @@ import { Button, Text, Card, Title, Paragraph } from 'react-native-paper';
 import { styles } from './style';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Colors } from '@resources';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ProductScreen = () => {
 
@@ -15,6 +16,7 @@ const ProductScreen = () => {
     const { product } = route.params;
 
     return (
+        <SafeAreaView edges={["top"]}>
         <ScrollView style={styles.container}>
             <Text style={styles.header}>Product Details</Text>
 
@@ -64,6 +66,7 @@ const ProductScreen = () => {
                 </Card.Content>
             </Card>
         </ScrollView>
+        </SafeAreaView>
     );
 };
 
