@@ -5,16 +5,26 @@ import { Button, Text, Card, Title, Paragraph } from 'react-native-paper';
 import { styles } from './style';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Colors } from '@resources';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../store/actions/cartActions';
 
 const ProductScreen = () => {
 
     const route = useRoute();
 
+    const dispatch = useDispatch();
+
     const navigation = useNavigation();
 
     const { product } = route.params;
 
+    const handleAddToCart = () => {
+        dispatch(addToCart(product, 1)); // default 1 quantity for now
+      };
+
     return (
+        <SafeAreaView>
         <ScrollView style={styles.container}>
             <Text style={styles.header}>Product Details</Text>
 
@@ -43,7 +53,7 @@ const ProductScreen = () => {
                         Back
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity onPress={handleAddToCart} style={styles.button}>
                     <Icon
                         name={'cart'}
                         size={20}
@@ -64,6 +74,7 @@ const ProductScreen = () => {
                 </Card.Content>
             </Card>
         </ScrollView>
+        </SafeAreaView>
     );
 };
 
