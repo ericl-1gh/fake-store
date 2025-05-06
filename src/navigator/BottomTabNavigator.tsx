@@ -19,7 +19,6 @@ import {
 import { isIpad } from '@utils';
 import { useTheme } from '@react-navigation/native';
 import { localize } from '@languages';
-import { useSelector } from 'react-redux';
 
 const BottomTab = createBottomTabNavigator<BottomTabBarParamList>();
 
@@ -60,18 +59,10 @@ const BottomTab = createBottomTabNavigator<BottomTabBarParamList>();
 //   );
 // };
 const BottomTabNavigator = () => {
-  const cartItems = useSelector((state: RootState) => state.cart.items);
-  const badge = cartItems?.length;
-
-  console.log("badge",badge);
-  
-
   const colors = useTheme().colors;
   const screens: ScreenComponents = {
     HomeScreen: Screen.HomeScreen,
     SettingScreen: Screen.SettingScreen,
-    CartScreen: Screen.CartScreen,
-    OrderScreen: Screen.OrderScreen
   };
   const isDarkMode = useColorScheme();
 
@@ -86,7 +77,6 @@ const BottomTabNavigator = () => {
         component={screens[name]}
         options={{
           tabBarLabel: label,
-          ...(name === "CartScreen" && { tabBarBadge: badge > 0 ? badge : undefined }), // Shows badge only if badge > 0
           headerTitle: localize(name),
           tabBarLabelPosition: isIpad() ? 'beside-icon' : 'below-icon',
           headerShown: false,
@@ -120,10 +110,8 @@ const BottomTabNavigator = () => {
       }}
       initialRouteName="HomeScreen"
     >
-      {_addScreen('HomeScreen', 'Products', 'ic_home')}
-      {_addScreen('CartScreen', 'My Cart', 'ic_cart')}
-      {_addScreen('OrderScreen', 'My Orders', 'ic_order')}
-      {_addScreen('SettingScreen', 'User Profile', 'ic_setting')}
+      {_addScreen('HomeScreen', 'Home', 'ic_home')}
+      {_addScreen('SettingScreen', 'Setting', 'ic_setting')}
     </BottomTab.Navigator>
   );
 };
