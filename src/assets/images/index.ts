@@ -5,6 +5,8 @@ export const images = {
   ic_atharvaLogo: require('./icons/ic_atharvaLogo.png'),
   back_arrow: require('./icons/back_arrow.png'),
   ic_signout: require('./icons/ic_signout.png'),
+  ic_cart: require('./icons/ic_cart.png'),
+  ic_order: require('./icons/ic_order.png'),
 
   // tab icons screen icons
   ic_home: require('./tabIcon/ic_home.png'),
