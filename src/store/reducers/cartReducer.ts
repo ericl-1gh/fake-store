@@ -39,17 +39,23 @@ import {
           ),
         };
   
-      case DECREMENT_QUANTITY:
-        return {
-          ...state,
-          items: state.items
-            .map((item) =>
-              item.id === action.payload && item.quantity > 1
-                ? { ...item, quantity: item.quantity - 1 }
-                : item
-            )
-            .filter((item) => item.quantity > 0),
-        };
+        case DECREMENT_QUANTITY:
+          return {
+            ...state,
+            items: state.items
+              .map((item) => {
+                if (item.id === action.payload) {
+                  if (item.quantity > 1) {
+                    return { ...item, quantity: item.quantity - 1 };
+                  }
+                  // quantity === 1, will be removed in filter below
+                  return null;
+                }
+                return item;
+              })
+              .filter((item) => item !== null),
+          };
+        
   
       default:
         return state;

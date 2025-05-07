@@ -48,6 +48,24 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#f5f5f5',
   },
+  buttonText: {
+    alignSelf: 'center',
+    paddingVertical: 10,
+    marginLeft: 10,
+    color: Colors.offWhite,
+  },
+  quantityContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+  },
+  quantityText: {
+    marginHorizontal: 10,
+    fontSize: 16,
+    color: Colors.offWhite,
+  },
+  
 });
 
 export { styles };

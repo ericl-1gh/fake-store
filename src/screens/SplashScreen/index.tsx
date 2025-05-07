@@ -22,7 +22,7 @@ const SplashScreen = () => {
       navigation.dispatch(
         CommonActions.reset({
           index: 0,
-          routes: [{ name: 'HomeBottom' }], // Corrected: Use 'name' instead of just string
+          routes: [{ name: isLogin ? 'HomeBottom' : 'LoginScreen'}], // Corrected: Use 'name' instead of just string
         })
       );
     }, 2000);

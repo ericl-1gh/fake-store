@@ -1,83 +1,131 @@
-import { useNavigation, useRoute } from '@react-navigation/native';
 import React from 'react';
-import { View, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { Button, Text, Card, Title, Paragraph } from 'react-native-paper';
-import { styles } from './style';
+import { View, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { Text, Card, Title, Paragraph } from 'react-native-paper';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Colors } from '@resources';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useDispatch } from 'react-redux';
-import { addToCart } from '../../store/actions/cartActions';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { styles } from './style';
+import { Colors } from '@resources';
+import {
+  addToCart,
+  incrementQuantity,
+  decrementQuantity,
+} from '../../store/actions/cartActions';
+import { performPostRequestServer, performPutRequestServer } from '@actions';
+import { endpoints } from '@services';
 
 const ProductScreen = () => {
+  const route = useRoute();
+  const navigation = useNavigation();
 
-    const route = useRoute();
+  const token = useSelector(state => state.userDetails.profileDetails?.token);
+  const dispatch = useDispatch();
+  const { product } = route.params;
 
-    const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
+  const cartItem = cartItems.find((item) => item.id === product.id);
 
-    const navigation = useNavigation();
+  console.log("cartItem", cartItem);
 
-    const { product } = route.params;
 
-    const handleAddToCart = () => {
-        dispatch(addToCart(product, 1)); // default 1 quantity for now
-      };
+  const handleAddToCart = async () => {
 
-    return (
-        <SafeAreaView>
-        <ScrollView style={styles.container}>
-            <Text style={styles.header}>Product Details</Text>
+    const requestBody = {
+      items: [
+        {
+          id: product.id,
+          price: product.price,
+          count: cartItem?.quantity + 1 || 1,
+        },
+      ],
+    };
+    console.log("requestBodyrequestBody",requestBody);
+    
+    try {
+      const cartAdded = await performPutRequestServer(endpoints.cart, requestBody, token)();
+      dispatch(addToCart(product, 1));
+    } catch (error) {
+      console.error('Error in adding to cart:', error);
+    }
+  };
 
-            <Image source={{ uri: product.image }} style={styles.productImage} />
+  const handleIncrement = async () => {
+    const requestBody = {
+      items: [
+        {
+          id: product.id,
+          price: product.price,
+          count: 1,
+        },
+      ],
+    };
+    const cartAdded = await performPutRequestServer(endpoints.cart, requestBody, token)();
+    dispatch(incrementQuantity(product.id));
+  };
 
-            <Text style={styles.title}>{product.title}</Text>
+  const handleDecrement = async () => {
+    const requestBody = {
+      items: [
+        {
+          id: product.id,
+          price: product.price,
+          count: 1,
+        },
+      ],
+    };
+    const cartAdded = await performPutRequestServer(endpoints.cart, requestBody, token)();    
+    dispatch(decrementQuantity(product.id));
+  };
 
-            <View style={styles.infoRow}>
-                <Text style={styles.infoText}>Rate: {product.rating.rate}</Text>
-                <Text style={styles.infoText}>Count: {product.rating.count}</Text>
-                <Text style={styles.infoText}>Price: ${product.price.toFixed(2)}</Text>
+  return (
+    <SafeAreaView>
+      <ScrollView style={styles.container}>
+        <Text style={styles.header}>Product Details</Text>
+
+        <Image source={{ uri: product.image }} style={styles.productImage} />
+        <Text style={styles.title}>{product.title}</Text>
+
+        <View style={styles.infoRow}>
+          <Text style={styles.infoText}>Rate: {product.rating.rate}</Text>
+          <Text style={styles.infoText}>Count: {product.rating.count}</Text>
+          <Text style={styles.infoText}>Price: ${product.price.toFixed(2)}</Text>
+        </View>
+
+        <View style={styles.buttonRow}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
+            <Icon name="arrow-back-outline" size={20} color={Colors.offWhite} />
+            <Text style={styles.buttonText}>Back</Text>
+          </TouchableOpacity>
+
+          {cartItem ? (
+            <View style={[styles.button, styles.quantityContainer]}>
+              <TouchableOpacity onPress={handleDecrement}>
+                <Icon name="remove-circle-outline" size={24} color={Colors.offWhite} />
+              </TouchableOpacity>
+              <Text style={styles.buttonText}>{cartItem.quantity}</Text>
+              <TouchableOpacity onPress={handleIncrement}>
+                <Icon name="add-circle-outline" size={24} color={Colors.offWhite} />
+              </TouchableOpacity>
             </View>
+          ) : (
+            <TouchableOpacity onPress={handleAddToCart} style={styles.button}>
+              <Icon name="cart" size={20} color={Colors.offWhite} />
+              <Text style={styles.buttonText}>Add to Cart</Text>
+            </TouchableOpacity>
+          )}
+        </View>
 
-            <View style={styles.buttonRow}>
-                <TouchableOpacity style={styles.button}
-                    onPress={() => navigation.goBack()}>
-                    <Icon
-                        name={'arrow-back-outline'}
-                        size={20}
-                        color={Colors.offWhite}
-                    />
-                    <Text
-                        style={{ alignSelf: 'center', paddingVertical: 10, marginLeft: 10, color: Colors.offWhite }}
-
-                    >
-                        Back
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={handleAddToCart} style={styles.button}>
-                    <Icon
-                        name={'cart'}
-                        size={20}
-                        color={Colors.offWhite}
-                    />
-                    <Text
-                        style={{ alignSelf: 'center', paddingVertical: 10, marginLeft: 10, color: Colors.offWhite }}
-                    >
-                        Add to Cart
-                    </Text>
-                </TouchableOpacity>
-            </View>
-
-            <Card style={styles.card}>
-                <Card.Content>
-                    <Title>Description:</Title>
-                    <Paragraph>{product.description}</Paragraph>
-                </Card.Content>
-            </Card>
-        </ScrollView>
-        </SafeAreaView>
-    );
+        <Card style={styles.card}>
+          <Card.Content>
+            <Title>Description:</Title>
+            <Paragraph>{product.description}</Paragraph>
+          </Card.Content>
+        </Card>
+      </ScrollView>
+    </SafeAreaView>
+  );
 };
-
-
 
 export default ProductScreen;

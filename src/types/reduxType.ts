@@ -1,8 +1,7 @@
 export interface IProfileDetails {
-  name?: string | null;
-  email?: string | null;
-  photoUrl?: string | null;
-  uid?: string | null;
+  name: string;
+  email: string;
+  token: string;
 }
 export interface IRootReduxState {
   userDetails: {

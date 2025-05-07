@@ -1,3 +1,4 @@
+import { Colors } from "@resources";
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
@@ -70,6 +71,11 @@ export const styles = StyleSheet.create({
       color: '#fff',
       fontSize: 16,
       fontWeight: '600',
+    },
+    emptycarttxt:{
+      fontSize:22,
+      alignSelf:'center',
+      color: Colors.black
     },
     button: { width: 140, alignSelf: 'center', paddingHorizontal: 20, borderRadius: 10, alignItems: 'center', marginTop: 20, backgroundColor: "#2b6ecc", flexDirection: 'row', justifyContent: 'center' },
   });

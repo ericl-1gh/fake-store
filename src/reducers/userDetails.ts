@@ -13,11 +13,16 @@ interface IAction {
   themeMode: string;
 }
 
-const initialValue = {
+const initialValue: {
+  isLogin: boolean;
+  profileDetails: IProfileDetails | null;
+  // themeMode: string;
+} = {
   isLogin: false,
   profileDetails: null,
-  themeMode: 'Auto',
+  // themeMode: 'Auto',
 };
+
 export const userDetails = (state = initialValue, action: IAction) => {
   switch (action.type) {
     case reduxTypes.IS_USER_LOGIN:
