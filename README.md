@@ -85,5 +85,17 @@ To learn more about React Native, take a look at the following resources:
 ![WhatsApp Image 2025-05-02 at 12 03 31 AM](https://github.com/user-attachments/assets/7eb62bf8-c7e1-4395-b761-159279042cd2)
 ![WhatsApp Image 2025-05-02 at 12 03 30 AM (1)](https://github.com/user-attachments/assets/a13b92ca-771b-4783-966f-42dd95ad860f)
 
+## Milestone 2:
+![simulator_screenshot_F6313850-C476-480A-9AD6-AC2740704369](https://github.com/user-attachments/assets/34989c96-25f8-407f-85c2-3c5827d7c61d)
+![Simulator Screenshot - iPhone 16 Pro - 2025-05-09 at 22 23 47](https://github.com/user-attachments/assets/585e9db8-dc1e-4706-831e-e2bdef5dc9e3)
+![simulator_screenshot_9E623050-1864-4DFF-AB70-AE2841961441](https://github.com/user-attachments/assets/a843da66-910e-466d-b8c0-cf82fb48d522)
+
+## Milestone 3:
+![Simulator Screenshot - iPhone 16 Pro - 2025-05-09 at 22 13 55](https://github.com/user-attachments/assets/8d7c4d0d-9776-4b9b-8f48-f02f73cfc2d3)
+![Simulator Screenshot - iPhone 16 Pro - 2025-05-09 at 22 17 34](https://github.com/user-attachments/assets/403918d6-a564-4cda-abff-9745b1be7071)
+![Simulator Screenshot - iPhone 16 Pro - 2025-05-09 at 22 18 06](https://github.com/user-attachments/assets/3c4af828-f517-475d-9b38-aee319fccad3)
+![Simulator Screenshot - iPhone 16 Pro - 2025-05-09 at 22 18 09](https://github.com/user-attachments/assets/5c59d39b-f734-4ddd-b0be-52672eef5219)
+
+
 
 
