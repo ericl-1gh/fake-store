@@ -1,6 +1,6 @@
-import {reduxTypes} from '@constants';
+import { reduxTypes } from '@constants';
 
-import {IProfileDetails} from '@types';
+import { IProfileDetails } from '@types';
 
 // export interface IUserState {
 //   isLogin: boolean;
@@ -22,6 +22,15 @@ const initialValue: {
   profileDetails: null,
   // themeMode: 'Auto',
 };
+export const updateProfileName = (name: string) => ({
+  type: reduxTypes.UPDATE_PROFILE_NAME,
+  name,
+});
+
+export const updateIsLogin = (isLogin: boolean) => ({
+  type: reduxTypes.SIGN_OUT,
+  isLogin,
+});
 
 export const userDetails = (state = initialValue, action: IAction) => {
   switch (action.type) {
@@ -42,7 +51,22 @@ export const userDetails = (state = initialValue, action: IAction) => {
       };
     case reduxTypes.RESET_DATA:
       return initialValue;
+    case reduxTypes.UPDATE_PROFILE_NAME:
+      return {
+        ...state,
+        profileDetails: {
+          ...state.profileDetails,
+          name: action.name ?? state.profileDetails?.name,
+        } as IProfileDetails,
+      };
+      case reduxTypes.SIGN_OUT:
+        return {
+          ...state,
+          isLogin: action.isLogin
+        };
+
     default:
       return state;
   }
 };
+

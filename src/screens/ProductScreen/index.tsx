@@ -21,63 +21,107 @@ const ProductScreen = () => {
   const navigation = useNavigation();
 
   const token = useSelector(state => state.userDetails.profileDetails?.token);
+
   const dispatch = useDispatch();
   const { product } = route.params;
 
   const cartItems = useSelector((state) => state.cart.items);
   const cartItem = cartItems.find((item) => item.id === product.id);
 
-  console.log("cartItem", cartItem);
-
+  const apiCallError = (response) => {
+    if (response.message === "Wrong token.") {
+      Alert.alert(response.message , "", [{
+        text: "Cancel",
+        style: 'cancel'
+      }, {
+        text: "Log in",
+        onPress: () => {
+          navigation.navigate("LoginScreen")
+        }
+      }])
+    }
+    // Handle error response from server if needed
+    console.error("Failed to add to cart:", cartAdded.message || "Unknown error");
+  }
 
   const handleAddToCart = async () => {
+    // Find if the product already exists in the cart
+    const existingCartItem = cartItems.find(item => item.id === product.id);
 
-    const requestBody = {
-      items: [
-        {
-          id: product.id,
-          price: product.price,
-          count: cartItem?.quantity + 1 || 1,
-        },
-      ],
-    };
-    console.log("requestBodyrequestBody",requestBody);
-    
+    // If the product exists in the cart, update the quantity, otherwise add it as a new product
+    const updatedCartItems = existingCartItem
+      ? cartItems.map(item =>
+        item.id === product.id
+          ? { ...item, count: item.count + 1 } // Increment the count of the existing product
+          : item
+      )
+      : [...cartItems, { ...product, count: 1 }]; // Add new product with count 1
+
+    // Construct the request body with updated cart items
+    const requestBody = { items: updatedCartItems };  // Send full product objects
+
     try {
+      // Make the request to update the cart on the server
       const cartAdded = await performPutRequestServer(endpoints.cart, requestBody, token)();
-      dispatch(addToCart(product, 1));
+
+      // If the response is successful, update the Redux state
+      if (cartAdded.status === "OK") {
+        // Dispatch the updated cart item with the correct count
+        const updatedItem = updatedCartItems.find(item => item.id === product.id);
+        dispatch(addToCart(updatedItem, 1)); // Dispatch with correct count
+      } else {
+        apiCallError(cartAdded);
+      }
     } catch (error) {
-      console.error('Error in adding to cart:', error);
+      console.error("Error in adding to cart:", error);
     }
   };
 
   const handleIncrement = async () => {
-    const requestBody = {
-      items: [
-        {
-          id: product.id,
-          price: product.price,
-          count: 1,
-        },
-      ],
-    };
-    const cartAdded = await performPutRequestServer(endpoints.cart, requestBody, token)();
-    dispatch(incrementQuantity(product.id));
+    const updatedCartItems = cartItems.map(item =>
+      item.id === product.id
+        ? { ...item, count: item.count + 1 }
+        : item
+    );
+
+    const requestBody = { items: updatedCartItems };
+
+    try {
+      const cartAdded = await performPutRequestServer(endpoints.cart, requestBody, token)();
+      if (cartAdded.status === "OK") {
+        dispatch(incrementQuantity(product.id));
+      } else {
+        apiCallError(cartAdded);
+      }
+    } catch (error) {
+      console.error("Error incrementing item:", error);
+    }
   };
 
+
   const handleDecrement = async () => {
-    const requestBody = {
-      items: [
-        {
-          id: product.id,
-          price: product.price,
-          count: 1,
-        },
-      ],
-    };
-    const cartAdded = await performPutRequestServer(endpoints.cart, requestBody, token)();    
-    dispatch(decrementQuantity(product.id));
+    const updatedCartItems = cartItems
+      .map(item =>
+        item.id === product.id
+          ? { ...item, count: item.count - 1 }
+          : item
+      )
+      .filter(item => item.count > 0); // remove items with 0 count
+
+    const requestBody = { items: updatedCartItems };
+
+    try {
+      const cartAdded = await performPutRequestServer(endpoints.cart, requestBody, token)();
+      if (cartAdded.status === "OK") {
+        dispatch(decrementQuantity(product.id));
+      } else {
+        apiCallError(cartAdded);
+      }
+    } catch (error) {
+      console.error("Error decrementing item:", error);
+    }
   };
+
 
   return (
     <SafeAreaView>
@@ -104,7 +148,7 @@ const ProductScreen = () => {
               <TouchableOpacity onPress={handleDecrement}>
                 <Icon name="remove-circle-outline" size={24} color={Colors.offWhite} />
               </TouchableOpacity>
-              <Text style={styles.buttonText}>{cartItem.quantity}</Text>
+              <Text style={styles.buttonText}>{cartItem.count}</Text>
               <TouchableOpacity onPress={handleIncrement}>
                 <Icon name="add-circle-outline" size={24} color={Colors.offWhite} />
               </TouchableOpacity>

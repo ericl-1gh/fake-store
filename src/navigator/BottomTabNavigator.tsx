@@ -61,10 +61,11 @@ const BottomTab = createBottomTabNavigator<BottomTabBarParamList>();
 // };
 const BottomTabNavigator = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
-  const badge = cartItems?.length;
+  const orderItems = useSelector((state: RootState) => state.order.items);
+  console.log('orderItems', orderItems);
 
-  console.log("badge",badge);
-  
+  const cartBadge = cartItems?.length;
+  const orderBadge = orderItems?.length;
 
   const colors = useTheme().colors;
   const screens: ScreenComponents = {
@@ -86,7 +87,8 @@ const BottomTabNavigator = () => {
         component={screens[name]}
         options={{
           tabBarLabel: label,
-          ...(name === "CartScreen" && { tabBarBadge: badge > 0 ? badge : undefined }), // Shows badge only if badge > 0
+          ...(name === "CartScreen" && cartBadge > 0 ? { tabBarBadge: cartBadge } : {}),
+          ...(name === "OrderScreen" && orderBadge > 0 ? { tabBarBadge: orderBadge } : {}),
           headerTitle: localize(name),
           tabBarLabelPosition: isIpad() ? 'beside-icon' : 'below-icon',
           headerShown: false,

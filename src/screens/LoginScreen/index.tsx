@@ -34,21 +34,19 @@ const LoginScreen = () => {
   const handleSubmit = async () => {
 
     if (isSignUp) {
-      try {
-        console.log("passsssssssssss",password);
-        
+      try {        
         let userData = { name: username, email: email, password: password };
         const signUpRes = await performPostRequestServer(endpoints.signup, userData)();
         console.log("signUpRes", signUpRes.data);
 
-        if (signUpRes?.data.status === 'OK') {
+        if (signUpRes?.status === 'OK') {
           dispatch(profileDetails({
-            name: signUpRes.data.name,
-            email: signUpRes.data.email,
-            token: signUpRes.data.token,
+            name: signUpRes.name,
+            email: signUpRes.email,
+            token: signUpRes.token,
           }));
         } else {
-          alert(signUpRes?.data?.message || 'Sign up failed');
+          alert(signUpRes?.message || 'Sign up failed');
         }
       } catch (err) {
         console.error(err);
@@ -59,16 +57,18 @@ const LoginScreen = () => {
       try {        
         let userData = { email: email, password: password };
         const signUpRes = await performPostRequestServer(endpoints.signin, userData)();
-        if (signUpRes?.data.status === 'OK') {
+        console.log("sisss",signUpRes);
+        
+        if (signUpRes?.status === 'OK') {
           dispatch(isUserLogin(true));
           dispatch(profileDetails({
-            name: signUpRes.data.name,
-            email: signUpRes.data.email,
-            token: signUpRes.data.token,
+            name: signUpRes.name,
+            email: signUpRes.email,
+            token: signUpRes.token,
           }));
           navigation.navigate('HomeBottom');
         } else {
-          alert(signUpRes?.data?.message || 'Sign up failed');
+          alert(signUpRes?.message || 'Sign up failed');
         }
       } catch (err) {
         console.error(err);
@@ -123,7 +123,7 @@ const LoginScreen = () => {
 
         <View style={styles.buttonRow}>
           <TouchableOpacity style={styles.button} onPress={handleClear}>
-            <Icon name="refresh" size={20} color="white" />
+            <Icon name="remove-outline" size={20} color="white" />
             <Text style={styles.buttonText}>Clear</Text>
           </TouchableOpacity>
 

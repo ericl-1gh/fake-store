@@ -1,66 +1,124 @@
-// ShoppingCartScreen.tsx
-import React from 'react';
-import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
-import Icon from 'react-native-vector-icons/MaterialIcons'; // For plus/minus icons
-import { styles } from './style';
+// OrderScreen.tsx
+import React, { useCallback, useState } from 'react';
+import { View, Text, Image, TouchableOpacity, Alert, ScrollView } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-// import { incrementQuantity, decrementQuantity } from '../store/actions/cartActions'; // adjust path
+import Icon from 'react-native-vector-icons/Ionicons';
+import { useDispatch, useSelector } from 'react-redux';
+import { performGetRequestServer, performPostRequestServer, performPutRequestServer } from '@actions';
+import { endpoints } from '@services';
+import { styles } from './style';
+import { setOrderItems } from 'store/actions/orderActions';
 
-type Props = {};
-
-
-const OrderScreen = (props: Props) => {
-    const cartItems = useSelector((state: any) => state.cart.items);
+const OrderScreen = () => {
     const dispatch = useDispatch();
+    const token = useSelector(state => state.userDetails.profileDetails?.token);
+    const [expandedOrderIds, setExpandedOrderIds] = useState([]);
+    const [orders, setOrders] = useState({
+        new: [],
+        paid: [],
+        delivered: [],
+    });
 
-    const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-    const totalPrice = cartItems
-        .reduce((sum, item) => sum + item.quantity * item.price, 0)
-        .toFixed(2);
+    const fetchOrders = async () => {
+        try {
+            const res = await performGetRequestServer(endpoints.fetchorders, token)();
+            const items = res.data.orders;
+            const categorized = { new: [], paid: [], delivered: [] };
 
-    const renderItem = ({ item }: any) => (
-        <View style={styles.itemCard}>
-            <Image source={{ uri: item.image }} style={styles.image} />
-            <View style={{ flex: 1 }}>
-                <Text style={styles.title}>{item.name}</Text>
-                <Text style={styles.price}>Price: ${item.price}</Text>
-                <View style={styles.quantityRow}>
-                    <TouchableOpacity onPress={() => dispatch(decrementQuantity(item.id))}>
-                        <Icon name="remove-circle" size={24} color="green" />
-                    </TouchableOpacity>
-                    <Text style={styles.quantityText}>quantity: {item.quantity}</Text>
-                    <TouchableOpacity onPress={() => dispatch(incrementQuantity(item.id))}>
-                        <Icon name="add-circle" size={24} color="green" />
-                    </TouchableOpacity>
-                </View>
+            items?.forEach((order) => {
+                if (order.is_delivered) categorized.delivered.push(order);
+                else if (order.is_paid) categorized.paid.push(order);
+                else categorized.new.push(order);
+            });
+            dispatch(setOrderItems(items ?? []));
+            setOrders(categorized);
+        } catch (err) {
+            console.error("Order fetch failed", err);
+            Alert.alert("Error", "Failed to fetch orders");
+        }
+    };
+
+    useFocusEffect(useCallback(() => { fetchOrders(); }, []));
+
+    const toggleExpand = (id: number) => {
+        setExpandedOrderIds(prev =>
+            prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+        );
+    };
+
+    const updateOrderStatus = async (order: any, type: 'pay' | 'deliver') => {
+        try {
+            const payload =
+                type === 'pay' ? { orderID: order.id, isPaid: 1, isDelivered: order.is_delivered } : { orderID: order.id, isDelivered: 1, isPaid: order.is_paid };
+            const response = await performPostRequestServer(endpoints.updateOrder, payload, token)();
+            fetchOrders();
+            // Alert.alert("Success", `Order marked as ${type === 'pay' ? 'Paid' : 'Delivered'}`,);
+        } catch (err) {
+            console.error("Update error", err);
+            Alert.alert("Error", "Failed to update order status");
+        }
+    };
+
+    const renderOrderItem = (order: any) => {
+        const isExpanded = expandedOrderIds.includes(order.id);
+        const items = JSON.parse(order.order_items);
+
+        return (
+            <View key={order.id} style={styles.orderCard}>
+                <TouchableOpacity onPress={() => toggleExpand(order.id)} style={styles.orderSummary}>
+                    <Text>Order ID: {order.id}</Text>
+                    <Text>Items: {order.item_numbers}</Text>
+                    <Text>Total: ${order.total_price / 100}</Text>
+                    <Icon name={isExpanded ? "chevron-up-outline" : "chevron-down-outline"} size={24} />
+                </TouchableOpacity>
+
+                {isExpanded && (
+                    <View style={styles.expandedContent}>
+                        {items.map((item: any, index: number) => (
+                            <View key={index} style={styles.itemRow}>
+                                <Image source={{ uri: item.image }} style={styles.image} />
+                                <View style={{ width: 230 }}>
+                                    <Text>{item.title}</Text>
+                                    <Text>Quantity: {item.quantity}</Text>
+                                </View>
+                            </View>
+                        ))}
+                        {!order.is_paid && !order.is_delivered && (
+                            <TouchableOpacity onPress={() => {
+                                updateOrderStatus(order, 'pay');
+                            }} style={styles.payButton}>
+                                <Text style={styles.buttonText}>Pay</Text>
+                            </TouchableOpacity>
+                        )}
+                        {order.is_paid && !order.is_delivered && (
+                            <TouchableOpacity onPress={() => updateOrderStatus(order, 'deliver')} style={styles.receiveButton}>
+                                <Text style={styles.buttonText}>Receive</Text>
+                            </TouchableOpacity>
+                        )}
+                    </View>
+                )}
             </View>
+        );
+    };
+
+    const renderSection = (title: string, list: any[]) => (
+        <View style={styles.section}>
+            <Text style={styles.sectionHeader}>{title} Orders: {list.length}</Text>
+            {list.map(renderOrderItem)}
         </View>
     );
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.header}>Shopping Cart</Text>
-
-            <View style={styles.summaryBox}>
-                <Text style={styles.summaryText}>Items: {totalItems}</Text>
-                <Text style={styles.summaryText}>Total Price: ${totalPrice}</Text>
-            </View>
-
-            <FlatList
-                data={cartItems}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={renderItem}
-                contentContainerStyle={{ paddingBottom: 20 }}
-            />
-
-            <TouchableOpacity style={styles.checkoutBtn}>
-                <Text style={styles.checkoutText}>Check Out</Text>
-            </TouchableOpacity>
+            <ScrollView>
+                <Text style={styles.header}>My Orders</Text>
+                {renderSection("New", orders.new)}
+                {renderSection("Paid", orders.paid)}
+                {renderSection("Delivered", orders.delivered)}
+            </ScrollView>
         </SafeAreaView>
     );
 };
 
 export { OrderScreen };
-
-

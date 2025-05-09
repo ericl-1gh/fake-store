@@ -1,74 +1,160 @@
-import { StyleSheet } from "react-native";
+import { Colors } from '@resources';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 12,
-      backgroundColor: '#fff',
-    },
-    header: {
-      fontSize: 20,
-      fontWeight: 'bold',
-      backgroundColor: '#3498db',
-      color: '#fff',
-      padding: 12,
-      textAlign: 'center',
-      borderRadius: 6,
-    },
-    summaryBox: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      backgroundColor: '#dff0fe',
-      padding: 10,
-      marginVertical: 10,
-      borderRadius: 6,
-    },
-    summaryText: {
-      fontSize: 16,
-      fontWeight: '600',
-    },
-    itemCard: {
-      flexDirection: 'row',
-      borderWidth: 1,
-      borderColor: '#999',
-      padding: 10,
-      marginBottom: 10,
-      borderRadius: 6,
-      backgroundColor: '#fff',
-    },
-    image: {
-      width: 70,
-      height: 70,
-      marginRight: 10,
-      resizeMode: 'contain',
-    },
-    title: {
-      fontSize: 15,
-      fontWeight: '500',
-    },
-    price: {
-      fontSize: 14,
-      marginVertical: 4,
-    },
-    quantityRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginTop: 4,
-    },
-    quantityText: {
-      marginHorizontal: 10,
-      fontSize: 15,
-    },
-    checkoutBtn: {
-      backgroundColor: '#007BFF',
-      padding: 14,
-      borderRadius: 8,
-      alignItems: 'center',
-      marginTop: 8,
-    },
-    checkoutText: {
-      color: '#fff',
-      fontSize: 16,
-      fontWeight: '600',
-    },
-  });
+  container: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: '#fff',
+  },
+  header: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginVertical: 10,
+    color: '#0077b6',
+  },
+  itemRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 8,
+    paddingVertical: 6,
+    backgroundColor: '#f9f9f9',
+    borderRadius: 8,
+    elevation: 1,
+  },
+  section: {
+    marginVertical: 10,
+    // backgroundColor: '#e0f7fa',
+    borderRadius: 8,
+    padding: 8,
+  },
+  caretIcon: {
+    backgroundColor: '#0097a7',
+    borderRadius: 20,
+    padding: 2,
+  },
+  orderSummary: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 8,
+    marginTop: 5,
+    borderBottomWidth: 1,
+    borderColor: Colors.black
+  },
+  expandedContent: {
+    marginTop: 10,
+    backgroundColor: '#ffffff',
+    borderRadius: 8,
+    padding: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  sectionHeader: {
+    backgroundColor: '#48cae4',
+    padding: 10,
+    marginVertical: 5,
+    borderRadius: 6,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  sectionHeaderText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+  orderCard: {
+    // backgroundColor: '#caf0f8',
+    marginVertical: 5,
+    padding: 10,
+    borderRadius: 8,
+  },
+  orderSummaryRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  orderDetailText: {
+    fontSize: 14,
+  },
+  expandIcon: {
+    marginLeft: 10,
+  },
+  itemCard: {
+    flexDirection: 'row',
+    marginTop: 10,
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 8,
+    elevation: 2,
+  },
+  image: {
+    width: 80,
+    height: 80,
+    marginRight: 10,
+    borderRadius: 4,
+  },
+  title: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  price: {
+    fontSize: 13,
+    color: '#333',
+  },
+  quantityRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 5,
+  },
+  quantityText: {
+    marginHorizontal: 10,
+    fontSize: 13,
+  },
+  actionButton: {
+    backgroundColor: '#0077b6',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 6,
+    alignSelf: 'flex-start',
+    marginTop: 10,
+  },
+  actionButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  payButton: {
+    backgroundColor: '#0077b6',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 6,
+    marginTop: 10,
+    alignSelf: 'center',
+  },
+  receiveButton: {
+    backgroundColor: '#48cae4',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 6,
+    marginTop: 10,
+    alignSelf: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+});

@@ -3,5 +3,9 @@ export const endpoints = {
     categorywiseproduct: 'products/category/',
     signup: 'users/signup',
     signin: 'users/signin',
-    cart: 'cart'
+    cart: 'cart',
+    ordercreate: 'orders/neworder',
+    fetchorders: 'orders/all',
+    updateOrder: 'orders/updateorder',
+    updateprofile: 'users/update'
 };

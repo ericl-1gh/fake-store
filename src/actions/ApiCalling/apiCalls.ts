@@ -45,13 +45,16 @@ export const performPostRequest = async (
 export const performPostRequestServer = (
   endPoint: string,
   jsonRequest: any,
+  token?:string
 ) => {
   return async (): Promise<any> => {
     try {
-      const wrapper = getAxiosInstanceFakeStore();
+      console.log("jsonRequest",jsonRequest);
+      
+      const wrapper = getAxiosInstanceFakeStore(token || '');
       const response = await wrapper.post(endPoint, jsonRequest);
-      console.log("response", response);
-      return response;
+      console.log("response from update", response.data);
+      return response.data;
     } catch (error: any) {
       console.log("error", error);
       throw error;
@@ -62,14 +65,14 @@ export const performPostRequestServer = (
 export const performPutRequestServer = (
   endPoint: string,
   jsonRequest: any,
-  token?: string
+  token?: string,
 ) => {
   return async (): Promise<any> => {
     try {
       const wrapper = getAxiosInstanceFakeStore(token || '');
       const response = await wrapper.put(endPoint, jsonRequest);
       console.log("response", response.data);
-      return response;
+      return response.data;
     } catch (error: any) {
       console.log("error", error);
       throw error;
