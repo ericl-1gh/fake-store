@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -15,6 +16,7 @@ import { isUserLogin, performGetRequest, performPostRequest, performPostRequestS
 import { endpoints } from '@services';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { Colors } from '@resources';
 
 const LoginScreen = () => {
   const dispatch = useDispatch();
@@ -45,6 +47,8 @@ const LoginScreen = () => {
             email: signUpRes.email,
             token: signUpRes.token,
           }));
+          setIsSignUp(false);
+          Alert.alert("Signed up")
         } else {
           alert(signUpRes?.message || 'Sign up failed');
         }
@@ -95,7 +99,7 @@ const LoginScreen = () => {
               placeholder="Enter user name"
               value={username}
               onChangeText={setUsername}
-              placeholderTextColor="#ccc"
+              placeholderTextColor={Colors.black}
             />
           </>
         )}
@@ -107,8 +111,8 @@ const LoginScreen = () => {
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
-          placeholderTextColor="#ccc"
-        />
+          placeholderTextColor={Colors.black}
+          />
 
         <Text style={styles.label}>Password</Text>
         <TextInput
@@ -117,8 +121,8 @@ const LoginScreen = () => {
           value={password}
           onChangeText={setPassword}
           secureTextEntry
-          placeholderTextColor="#ccc"
-        />
+          placeholderTextColor={Colors.black}
+          />
 
 
         <View style={styles.buttonRow}>

@@ -80,7 +80,10 @@ const OrderScreen = () => {
                                 <Image source={{ uri: item.image }} style={styles.image} />
                                 <View style={{ width: 230 }}>
                                     <Text>{item.title}</Text>
-                                    <Text>Quantity: {item.quantity}</Text>
+                                    <View style={{flexDirection:'row'}}>
+                                    <Text>price: ${item.price}</Text>
+                                    <Text style={{marginLeft: 30}}>Quantity: {item.quantity}</Text>
+                                    </View>
                                 </View>
                             </View>
                         ))}

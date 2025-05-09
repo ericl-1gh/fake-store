@@ -125,7 +125,7 @@ const BottomTabNavigator = () => {
       {_addScreen('HomeScreen', 'Products', 'ic_home')}
       {_addScreen('CartScreen', 'My Cart', 'ic_cart')}
       {_addScreen('OrderScreen', 'My Orders', 'ic_order')}
-      {_addScreen('SettingScreen', 'User Profile', 'ic_setting')}
+      {_addScreen('SettingScreen', 'User Profile', 'ic_user')}
     </BottomTab.Navigator>
   );
 };

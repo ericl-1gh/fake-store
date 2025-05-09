@@ -55,7 +55,7 @@ export const styles = StyleSheet.create({
   switchText: {
     color: 'white',
     textAlign: 'center',
-    marginTop: 10,
+    marginVertical: 10,
     textDecorationLine: 'underline',
   },
 });

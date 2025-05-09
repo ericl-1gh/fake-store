@@ -7,6 +7,8 @@ export const images = {
   ic_signout: require('./icons/ic_signout.png'),
   ic_cart: require('./icons/ic_cart.png'),
   ic_order: require('./icons/ic_order.png'),
+  ic_user: require('./icons/ic_user.png'),
+
 
   // tab icons screen icons
   ic_home: require('./tabIcon/ic_home.png'),

@@ -54,11 +54,11 @@ const HomeScreen = (props: Props) => {
         else categorized.new.push(order);
       });
       dispatch(setOrderItems(items ?? []));
-    } catch(err){
+    } catch (err) {
       console.log(err);
-      
+
     }
-      };
+  };
 
   useEffect(() => {
     fetchCategories();

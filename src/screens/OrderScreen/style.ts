@@ -99,6 +99,7 @@ export const styles = StyleSheet.create({
     height: 80,
     marginRight: 10,
     borderRadius: 4,
+    resizeMode:'contain'
   },
   title: {
     fontSize: 14,
